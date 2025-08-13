@@ -96,7 +96,7 @@ const MentorCalendar = () => {
 
   const fetchEvents = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/api/mentor/calendar/events', {
+      const response = await axios.get('https://hustlee-9d22.onrender.com/api/mentor/calendar/events', {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`
         }
@@ -130,7 +130,7 @@ const MentorCalendar = () => {
 
   const fetchStudents = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/api/mentor/students', {
+      const response = await axios.get('https://hustlee-9d22.onrender.com/api/mentor/students', {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`
         }
@@ -148,7 +148,7 @@ const MentorCalendar = () => {
 
   const fetchSessions = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/api/mentor/sessions', {
+      const response = await axios.get('https://hustlee-9d22.onrender.com/api/mentor/sessions', {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`
         }
