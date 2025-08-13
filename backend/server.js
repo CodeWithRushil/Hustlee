@@ -8,7 +8,7 @@ dotenv.config();
 const app = express();
 // CORS configuration
 const corsOptions = {
-  origin: ['https://hustleeworkspace.vercel.app', 'https://hustlee-six.vercel.app'], // Allow both ports
+  origin: ['https://hustleeworkspace.vercel.app', 'https://hustlee-six.vercel.app','https://hustleeworkspace-eta.vercel.app'], // Allow both ports
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true,
