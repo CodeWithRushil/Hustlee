@@ -58,7 +58,7 @@ const MentorAnalytics = () => {
 
   const fetchAnalytics = async () => {
     try {
-      const response = await axios.get(`http://localhost:5000/api/mentor/analytics?timeRange=${timeRange}`, {
+      const response = await axios.get(`https://hustlee-9d22.onrender.com/api/mentor/analytics?timeRange=${timeRange}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`
         }
