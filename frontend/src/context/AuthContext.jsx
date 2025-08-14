@@ -3,6 +3,11 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 
+
+import { signInWithPopup, signOut, onAuthStateChanged } from 'firebase/auth';
+import { auth, googleProvider } from '../firebase'; 
+
+
 const AuthContext = createContext();
 
 export const useAuth = () => {
@@ -15,7 +20,25 @@ export const AuthProvider = ({ children }) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    checkAuth();
+    const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
+      if (firebaseUser) {
+        const token = await firebaseUser.getIdToken();
+        
+        try {
+          const response = await axios.get('https://hustlee-9d22.onrender.com/api/auth/me', {
+            headers: { Authorization: `Bearer ${token}` }
+          });
+          setUser(response.data.user);
+        } catch (error) {
+          setUser(firebaseUser); 
+        }
+      } else {
+        setUser(null);
+      }
+      setLoading(false);
+    });
+
+    return () => unsubscribe();
   }, []);
 
   const checkAuth = async () => {
@@ -43,16 +66,13 @@ export const AuthProvider = ({ children }) => {
       });
 
       const { token, user } = response.data;
-      
-      if (!token || !user) {
-        throw new Error('Invalid response from server');
-      }
+
+      if (!token || !user) throw new Error('Invalid response from server');
 
       localStorage.setItem('token', token);
       setUser(user);
       toast.success('Login successful!');
-      
-      // Navigate based on user type
+
       if (user.userType === 'mentor') {
         navigate('/mentor/dashboard');
       } else {
@@ -69,16 +89,13 @@ export const AuthProvider = ({ children }) => {
     try {
       const response = await axios.post('https://hustlee-9d22.onrender.com/api/auth/register', userData);
       const { token, user } = response.data;
-      
-      if (!token || !user) {
-        throw new Error('Invalid response from server');
-      }
+
+      if (!token || !user) throw new Error('Invalid response from server');
 
       localStorage.setItem('token', token);
       setUser(user);
       toast.success('Registration successful!');
-      
-      // Navigate based on user type
+
       if (user.userType === 'mentor') {
         navigate('/mentor/dashboard');
       } else {
@@ -91,7 +108,44 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const logout = () => {
+  // Google login function implemented here
+
+  const googleLogin = async () => {
+    try {
+      const result = await signInWithPopup(auth, googleProvider);
+      const firebaseUser = result.user;
+      const token = await firebaseUser.getIdToken();
+
+      //Test: Send token to backend if needed
+      try {
+        const response = await axios.post('https://hustlee-9d22.onrender.com/api/auth/google', { token });
+        setUser(response.data.user);
+        toast.success('Google login successful!');
+
+        if (response.data.user.userType === 'mentor') {
+          navigate('/mentor/dashboard');
+        } else {
+          navigate('/dashboard');
+        }
+      } catch (err) {
+       
+        setUser(firebaseUser);
+        toast.success('Google login successful (Firebase only)');
+        navigate('/dashboard');
+      }
+
+    } catch (error) {
+      console.error(error);
+      toast.error('Google login failed');
+    }
+  };
+
+  const logout = async () => {
+    try {
+      await signOut(auth); 
+    } catch (err) {
+      console.warn('Firebase sign out error', err);
+    }
     localStorage.removeItem('token');
     setUser(null);
     navigate('/');
@@ -103,6 +157,7 @@ export const AuthProvider = ({ children }) => {
     loading,
     login,
     register,
+    googleLogin,
     logout,
     checkAuth,
     isAuthenticated: !!user
@@ -113,4 +168,4 @@ export const AuthProvider = ({ children }) => {
       {!loading && children}
     </AuthContext.Provider>
   );
-}; 
+};
