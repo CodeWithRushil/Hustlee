@@ -100,7 +100,7 @@ const MentorStudents = () => {
 
   const fetchStudents = async () => {
     try {
-      const response = await axios.get('https://hustleeworkspace.onrender.com/api/mentor/students', {
+      const response = await axios.get('https://hustlee-9d22.onrender.com/api/mentor/students', {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`
         }
@@ -420,7 +420,7 @@ const MentorStudents = () => {
 
   const handleUpdateProgress = async (studentId, progress) => {
     try {
-      const response = await axios.put(`http://localhost:5000/api/mentorship/students/${studentId}/progress`, { progress }, {
+      const response = await axios.put(`https://hustlee-9d22.onrender.com/api/mentorship/students/${studentId}/progress`, { progress }, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`
         }
@@ -497,7 +497,7 @@ const MentorStudents = () => {
       }
 
       const response = await axios.post(
-        `https://hustleeworkspace.onrender.com/api/mentor/students/${studentId}/goals`,
+        `https://hustlee-9d22.onrender.com/api/mentor/students/${studentId}/goals`,
         newGoal,
         {
           headers: {
@@ -532,7 +532,7 @@ const MentorStudents = () => {
   const handleUpdateGoalStatus = async (studentId, goalId, status) => {
     try {
       const response = await axios.put(
-        `https://hustleeworkspace.onrender.com/api/mentor/students/${studentId}/goals/${goalId}`,
+        `https://hustlee-9d22.onrender.com/api/mentor/students/${studentId}/goals/${goalId}`,
         { status },
         {
           headers: {
