@@ -110,7 +110,7 @@ const Register = () => {
       // Remove confirmPassword from the request
       const { confirmPassword, ...registrationData } = formData;
 
-      const response = await fetch('https://hustleeworkspace.onrender.com/api/auth/register', {
+      const response = await fetch('https://hustlee-9d22.onrender.com/api/auth/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
