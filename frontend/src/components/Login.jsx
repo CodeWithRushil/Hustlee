@@ -96,7 +96,6 @@ const Login = () => {
           </div>
         </div>
 
-        {/* Centered Nav Links (absolutely centered so width of left/right doesn't move it) */}
         <ul
           className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 flex space-x-10 pointer-events-auto"
           aria-label="Primary"
@@ -105,10 +104,10 @@ const Login = () => {
             <li
               key={item}
               onClick={() => setActive(item)}
-              className={`cursor-pointer pb-1 text-white hover:text-[#BC61F3] transition-all duration-200 ${
+              className={`cursor-pointer pb-1 hover:text-[#BC61F3] transition-all duration-200 ${
                 active === item
-                  ? "border-b-2 border-[#BC61F3] text-[#BC61F3]"
-                  : "border-b-2 border-transparent"
+                  ? "text-[#BC61F3] border-b-2 border-[#BC61F3]"
+                  : "border-b-2 border-transparent text-white"
               }`}
             >
               {item}
@@ -191,7 +190,7 @@ const Login = () => {
                     required
                     value={formData.email}
                     onChange={handleChange}
-                    className="appearance-none text-white block w-full px-3 bg-[#1E2939] py-2 border border-[#485363] rounded-md shadow-sm placeholder-[#485363] focus:outline-none sm:text-sm"
+                    className="appearance-none text-white block w-full px-3 bg-[#1E2939] py-2 border border-[#485363] rounded-md shadow-sm placeholder-[#485363] focus:outline-none sm:text-sm focus:outline-none focus:ring-1"
                   />
                 </div>
               </div>
@@ -213,7 +212,7 @@ const Login = () => {
                     required
                     value={formData.password}
                     onChange={handleChange}
-                    className="appearance-none text-white block w-full px-3 py-2 bg-[#1E2939] border border-[#485363] rounded-md shadow-sm placeholder-[#485363] focus:outline-none sm:text-sm"
+                    className="appearance-none text-white block w-full px-3 py-2 bg-[#1E2939] border border-[#485363] rounded-md shadow-sm placeholder-[#485363] focus:outline-none sm:text-sm focus:outline-none focus:ring-1"
                   />
                 </div>
               </div>
