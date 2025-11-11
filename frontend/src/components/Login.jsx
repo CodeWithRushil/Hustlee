@@ -39,8 +39,11 @@ const Login = () => {
     <>
       <nav className="relative px-8 py-4 shadow-md bg-[#020106]">
         <div className="flex items-center justify-between">
-          {/* Left: Logo (static in flow) */}
-          <div className="flex items-center space-x-3 cursor-pointer flex-shrink-0">
+          {/* Left: Logo (linked to Home) */}
+          <Link
+            to="/"
+            className="flex items-center space-x-3 cursor-pointer flex-shrink-0"
+          >
             <img
               src="/Hustlee_Logo.png"
               alt="Logo Icon"
@@ -51,51 +54,59 @@ const Login = () => {
               alt="Logo Text"
               className="h-8 object-contain"
             />
-          </div>
+          </Link>
 
-          {/* Right: Buttons (static in flow) */}
+          {/* Right: Buttons */}
           <div className="flex space-x-4 items-center flex-shrink-0">
-            <button
-              className="w-32 px-3 py-1.5 rounded-full text-white font-semibold shadow-md hover:opacity-90 transition-all duration-200"
-              style={{
-                background: "linear-gradient(to bottom, #5C43F6, #BC61F3)",
-              }}
-            >
-              Login
-            </button>
+            {/* Login Button */}
+            <Link to="/login">
+              <button
+                className="w-32 px-3 py-1.5 rounded-full text-white font-semibold shadow-md hover:opacity-90 transition-all duration-200"
+                style={{
+                  background: "linear-gradient(to bottom, #5C43F6, #BC61F3)",
+                }}
+              >
+                Login
+              </button>
+            </Link>
 
-            <button
-              className="relative w-32 px-3 py-1.5 rounded-full font-semibold text-transparent transition-all duration-300 overflow-hidden group"
-              style={{
-                backgroundImage: "linear-gradient(to bottom, #5C43F6, #BC61F3)",
-                WebkitBackgroundClip: "text",
-                border: "2px solid transparent",
-                backgroundOrigin: "border-box",
-              }}
-            >
-              <span
-                className="absolute inset-0 rounded-full p-[2px]"
+            {/* Sign Up Button */}
+            <Link to="/register">
+              <button
+                className="relative w-32 px-3 py-1.5 rounded-full font-semibold text-transparent transition-all duration-300 overflow-hidden group"
                 style={{
-                  background: "linear-gradient(to bottom, #5C43F6, #BC61F3)",
-                  WebkitMask:
-                    "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
-                  WebkitMaskComposite: "xor",
-                  maskComposite: "exclude",
+                  backgroundImage:
+                    "linear-gradient(to bottom, #5C43F6, #BC61F3)",
+                  WebkitBackgroundClip: "text",
+                  border: "2px solid transparent",
+                  backgroundOrigin: "border-box",
                 }}
-              />
-              <span className="text-white relative z-10 group-hover:text-white transition-all duration-300">
-                Sign Up
-              </span>
-              <span
-                className="absolute inset-0 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-300"
-                style={{
-                  background: "linear-gradient(to bottom, #5C43F6, #BC61F3)",
-                }}
-              />
-            </button>
+              >
+                <span
+                  className="absolute inset-0 rounded-full p-[2px]"
+                  style={{
+                    background: "linear-gradient(to bottom, #5C43F6, #BC61F3)",
+                    WebkitMask:
+                      "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
+                    WebkitMaskComposite: "xor",
+                    maskComposite: "exclude",
+                  }}
+                />
+                <span className="text-white relative z-10 group-hover:text-white transition-all duration-300">
+                  Sign Up
+                </span>
+                <span
+                  className="absolute inset-0 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-300"
+                  style={{
+                    background: "linear-gradient(to bottom, #5C43F6, #BC61F3)",
+                  }}
+                />
+              </button>
+            </Link>
           </div>
         </div>
 
+        {/* Center Nav Links */}
         <ul
           className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 flex space-x-10 pointer-events-auto"
           aria-label="Primary"
@@ -110,7 +121,9 @@ const Login = () => {
                   : "border-b-2 border-transparent text-white"
               }`}
             >
-              {item}
+              <Link to={item === "Home" ? "/" : `/${item.toLowerCase()}`}>
+                {item}
+              </Link>
             </li>
           ))}
         </ul>

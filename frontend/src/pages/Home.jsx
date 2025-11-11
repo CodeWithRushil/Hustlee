@@ -1,403 +1,579 @@
-import { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { motion } from 'framer-motion';
-import { useAuth } from '../context/AuthContext';
+import React, { useState } from "react";
+import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
+
+const fadeIn = (delay = 0) => ({
+  initial: { opacity: 0, y: 30 },
+  whileInView: { opacity: 1, y: 0 },
+  transition: { duration: 0.8, delay },
+  viewport: { once: true },
+});
+
 const Home = () => {
-  const { user, logout } = useAuth();
-  const navigate = useNavigate();
-  const [isVisible, setIsVisible] = useState(false);
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-
-  useEffect(() => {
-    setIsVisible(true);
-  }, []);
-
-  const handleLogout = () => {
-    logout();
-    navigate('/login');
-  };
-
-  const fadeInUp = {
-    hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0 }
-  };
-
-  const staggerContainer = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1
-      }
-    }
-  };
-
+  const [active, setActive] = useState("Home");
+  const navItems = ["Home", "Skillpack", "Gigs", "Mentor", "Leaderboard"];
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
-      {/* Hero Section with Integrated Navigation */}
-      <motion.div 
-        initial="hidden"
-        animate="visible"
-        variants={staggerContainer}
-        className="relative overflow-hidden bg-gradient-to-r from-purple-600 to-indigo-600"
-      >
-        <div className="absolute inset-0">
-          <div className="absolute inset-0 bg-gradient-to-r from-purple-600 to-indigo-600 mix-blend-multiply" />
-          <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-20" />
+    <>
+      <nav className="relative px-8 py-4 shadow-md bg-[#020106]">
+        <div className="flex items-center justify-between">
+          {/* Left: Logo (linked to Home) */}
+          <Link
+            to="/"
+            className="flex items-center space-x-3 cursor-pointer flex-shrink-0"
+          >
+            <img
+              src="/Hustlee_Logo.png"
+              alt="Logo Icon"
+              className="h-10 w-10 object-contain"
+            />
+            <img
+              src="/HUSTLee.png"
+              alt="Logo Text"
+              className="h-8 object-contain"
+            />
+          </Link>
+
+          {/* Right: Buttons */}
+          <div className="flex space-x-4 items-center flex-shrink-0">
+            {/* Login Button */}
+            <Link to="/login">
+              <button
+                className="w-32 px-3 py-1.5 rounded-full text-white font-semibold shadow-md hover:opacity-90 transition-all duration-200"
+                style={{
+                  background: "linear-gradient(to bottom, #5C43F6, #BC61F3)",
+                }}
+              >
+                Login
+              </button>
+            </Link>
+
+            {/* Sign Up Button */}
+            <Link to="/register">
+              <button
+                className="relative w-32 px-3 py-1.5 rounded-full font-semibold text-transparent transition-all duration-300 overflow-hidden group"
+                style={{
+                  backgroundImage:
+                    "linear-gradient(to bottom, #5C43F6, #BC61F3)",
+                  WebkitBackgroundClip: "text",
+                  border: "2px solid transparent",
+                  backgroundOrigin: "border-box",
+                }}
+              >
+                <span
+                  className="absolute inset-0 rounded-full p-[2px]"
+                  style={{
+                    background: "linear-gradient(to bottom, #5C43F6, #BC61F3)",
+                    WebkitMask:
+                      "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
+                    WebkitMaskComposite: "xor",
+                    maskComposite: "exclude",
+                  }}
+                />
+                <span className="text-white relative z-10 group-hover:text-white transition-all duration-300">
+                  Sign Up
+                </span>
+                <span
+                  className="absolute inset-0 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-300"
+                  style={{
+                    background: "linear-gradient(to bottom, #5C43F6, #BC61F3)",
+                  }}
+                />
+              </button>
+            </Link>
+          </div>
         </div>
 
-        {/* Integrated Navigation */}
-        <nav className="relative">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex justify-between items-center py-4">
-              <Link to="/" className="flex items-center space-x-2">
-                <span className="text-2xl font-bold text-white">Hustlee</span>
+        {/* Center Nav Links */}
+        <ul
+          className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 flex space-x-10 pointer-events-auto"
+          aria-label="Primary"
+        >
+          {navItems.map((item) => (
+            <li
+              key={item}
+              onClick={() => setActive(item)}
+              className={`cursor-pointer pb-1 hover:text-[#BC61F3] transition-all duration-200 ${
+                active === item
+                  ? "text-[#BC61F3] border-b-2 border-[#BC61F3]"
+                  : "border-b-2 border-transparent text-white"
+              }`}
+            >
+              <Link to={item === "Home" ? "/" : `/${item.toLowerCase()}`}>
+                {item}
               </Link>
-
-              {/* Desktop Navigation */}
-              <div className="hidden sm:flex sm:items-center sm:space-x-8">
-                {user ? (
-                  <>
-                    <Link to="/dashboard" className="text-white hover:bg-purple-700 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200">
-                      Dashboard
-                    </Link>
-                    <Link to="/skill-test" className="text-white hover:bg-purple-700 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200">
-                      Skill Tests
-                    </Link>
-                    <Link to="/portfolio" className="text-white hover:bg-purple-700 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200">
-                      Portfolio
-                    </Link>
-                    <Link to="/mentorship" className="text-white hover:bg-purple-700 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200">
-                      Mentorship
-                    </Link>
-                    <Link to="/gigs" className="text-white hover:bg-purple-700 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200">
-                      Gigs
-                    </Link>
-                    <Link to="/courses" className="text-white hover:bg-purple-700 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200">
-                      Courses
-                    </Link>
-                    <Link to="/mentor/dashboard" className="block px-3 py-2 rounded-md text-base font-medium text-white hover:bg-indigo-600">
-                    Mentor Dashboard
-                  </Link>
-                    <button
-                      onClick={handleLogout}
-                      className="bg-white text-purple-600 hover:bg-purple-100 px-4 py-2 rounded-md text-sm font-medium transition-colors duration-200"
-                    >
-                      Logout
-                    </button>
-                  </>
-                ) : (
-                  <div className="flex items-center space-x-4">
-                    <Link to="/login" className="text-white hover:bg-purple-700 px-4 py-2 rounded-md text-sm font-medium transition-colors duration-200">
-                      Login
-                    </Link>
-                    <Link to="/register" className="bg-white text-purple-600 hover:bg-purple-100 px-4 py-2 rounded-md text-sm font-medium transition-colors duration-200">
-                      Register
-                    </Link>
-                  </div>
-                )}
-              </div>
-
-              {/* Mobile menu button */}
-              <div className="sm:hidden flex items-center">
-                <button
-                  onClick={() => setIsMenuOpen(!isMenuOpen)}
-                  className="inline-flex items-center justify-center p-2 rounded-md text-white hover:text-indigo-200 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
-                >
-                  <span className="sr-only">Open main menu</span>
-                  {!isMenuOpen ? (
-                    <svg className="block h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-                    </svg>
-                  ) : (
-                    <svg className="block h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                    </svg>
-                  )}
-                </button>
-              </div>
-            </div>
-          </div>
-
-          {/* Mobile menu */}
+            </li>
+          ))}
+        </ul>
+      </nav>
+      
+      <div className="bg-[#020106] text-white overflow-hidden">
+        {/* Hero Section */}
+        <section className="flex flex-col-reverse md:flex-row items-center justify-between pt-24 pb-20 px-4 md:px-16">
+          {/* Left Text Section */}
           <motion.div
-            initial={false}
-            animate={isMenuOpen ? "open" : "closed"}
-            variants={{
-              open: { opacity: 1, height: "auto" },
-              closed: { opacity: 0, height: 0 }
-            }}
-            className="sm:hidden bg-indigo-700"
+            {...fadeIn(0.2)}
+            className="flex-1 text-center md:text-left mt-10 md:mt-0"
           >
-            <div className="px-2 pt-2 pb-3 space-y-1">
-              {user ? (
-                <>
-                  <Link to="/dashboard" className="block px-3 py-2 rounded-md text-base font-medium text-white hover:bg-indigo-600">
-                    Dashboard
-                  </Link>
-                  <Link to="/skill-test" className="block px-3 py-2 rounded-md text-base font-medium text-white hover:bg-indigo-600">
-                    Skill Tests
-                  </Link>
-                  <Link to="/portfolio" className="block px-3 py-2 rounded-md text-base font-medium text-white hover:bg-indigo-600">
-                    Portfolio
-                  </Link>
-                  <Link to="/mentorship" className="block px-3 py-2 rounded-md text-base font-medium text-white hover:bg-indigo-600">
-                    Mentorship
-                  </Link>
-                  <Link to="/gigs" className="block px-3 py-2 rounded-md text-base font-medium text-white hover:bg-indigo-600">
-                    Gigs
-                  </Link>
-                  {/*Just for testing Mentor Dashboard*/}
-                  <Link to="/mentor/dashboard" className="block px-3 py-2 rounded-md text-base font-medium text-white hover:bg-indigo-600">
-                    Mentor Dashboard
-                  </Link>
-                  <Link to="/courses" className="block px-3 py-2 rounded-md text-base font-medium text-white hover:bg-indigo-600">
-                    Courses
-                  </Link>
+            {/* Gradient Heading */}
+            <h1 className="text-4xl md:text-6xl font-extrabold leading-tight mb-4 bg-gradient-to-r from-[#735ff7ff] via-[#c4b6ccff] to-[#BC61F3] text-transparent bg-clip-text">
+              Learn <br /> Get Verified <br /> Earn
+            </h1>
+
+            <p className="text-[#BCBCBC] max-w-lg mb-6 text-base md:text-lg">
+              Join HUSTLee — where you learn, get verified, and make connections
+              along your grind.
+            </p>
+
+            <motion.button
+              {...fadeIn(0.4)}
+              className="px-8 py-3 rounded-full text-white font-semibold shadow-md hover:opacity-90 transition-all duration-200"
+              style={{
+                background: "linear-gradient(to bottom, #5C43F6, #BC61F3)",
+              }}
+            >
+              Get Started
+            </motion.button>
+          </motion.div>
+
+          {/* Right Image Placeholder */}
+          <motion.div
+            {...fadeIn(0.5)}
+            className="flex-1 flex justify-center md:justify-end"
+          >
+            <img
+              src="https://placehold.co/450x350/1E1B2E/FFFFFF?text=Hero+Image"
+              alt="Hero Placeholder"
+              className="w-full max-w-md rounded-lg shadow-lg object-contain"
+            />
+          </motion.div>
+        </section>
+
+        {/* Floating Options */}
+        <section className="py-20 px-6 md:px-16 bg-[#020106] text-white text-center">
+          <div className="flex flex-wrap justify-center gap-8 md:gap-12">
+            {[
+              { emoji: "🎯", text: "Explore Gigs" },
+              { emoji: "🧠", text: "Upgrade Skills" },
+              { emoji: "👨‍🏫", text: "Work on real gigs" },
+              { emoji: "💰", text: "Connect with mentors" },
+              { emoji: "🏆", text: "Grow your career" },
+            ].map((item, index) => (
+              <motion.div
+                key={index}
+                className="flex cursor-pointer items-center space-x-3 rounded-xl px-5 py-4 backdrop-blur-sm shadow-lg hover:shadow-[#BC61F3]/40 transition-all duration-300"
+                animate={{
+                  y: [0, -8, 0],
+                }}
+                transition={{
+                  duration: 3,
+                  repeat: Infinity,
+                  delay: index * 0.2,
+                  ease: "easeInOut",
+                }}
+              >
+                <span className="text-2xl">{item.emoji}</span>
+                <span className="text-sm md:text-base font-medium text-[#E5E5E5]">
+                  {item.text}
+                </span>
+              </motion.div>
+            ))}
+          </div>
+        </section>
+
+        {/* Gigs Section */}
+        <section className="text-center py-16 px-4 md:px-8">
+          <motion.h2
+            {...fadeIn(0.2)}
+            className="text-3xl font-bold mb-2 uppercase"
+          >
+            Earn with <span className="text-[#FDD835] font-medium">Gigs</span>
+          </motion.h2>
+          <motion.p {...fadeIn(0.4)} className="text-[#9CA9AE] mb-10">
+            Explore real-world opportunities to put your skills to work.
+          </motion.p>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8 justify-items-center">
+            {[...Array(5)].map((_, i) => (
+              <motion.div
+                {...fadeIn(i * 0.1 + 0.3)}
+                key={i}
+                className="relative w-60 h-80 rounded-xl overflow-hidden hover:scale-105 transition-transform duration-300"
+              >
+                {/* Background Image */}
+                <img
+                  src={i % 2 === 0 ? "./g1x.png" : "./g2x.png"}
+                  alt={`Gig ${i + 1}`}
+                  className="absolute inset-0 w-full h-full object-cover"
+                />
+
+                {/* Floating Info Box */}
+                <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 w-[85%] bg-[#1E1B2E]/95 backdrop-blur-md rounded-xl shadow-lg border border-[#5C43F6]/40 px-4 py-3">
+                  <h3 className="font-semibold text-lg text-white">
+                    Frontend Developer
+                  </h3>
+                  <p className="text-sm text-[#9CA9AE] mt-1">
+                    Build stunning interfaces with modern tools.
+                  </p>
+                </div>
+
+                {/* Gradient overlay for readability */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent"></div>
+              </motion.div>
+            ))}
+          </div>
+        </section>
+
+        {/* Skillpacks Section */}
+        <section className="text-center py-20 bg-gradient-to-b from-[#100A24] to-[#020106]">
+          <motion.h2
+            {...fadeIn(0.2)}
+            className="text-3xl font-bold mb-10 uppercase"
+          >
+            Explore <span className="text-[#FDD835]">Skillpacks</span>
+          </motion.h2>
+
+          <div className="flex flex-wrap justify-center gap-10">
+            {["Web Dev", "ML & AI", "Data Science", "Blockchain"].map(
+              (skill, i) => (
+                <motion.div
+                  {...fadeIn(i * 0.1 + 0.3)}
+                  key={skill}
+                  className="bg-[#1E1B2E] p-6 rounded-xl w-56 text-center hover:scale-105 transition-transform duration-300 shadow-lg"
+                >
+                  {/* Clean Circle Image (no border, no gradient) */}
+                  <div className="h-40 w-40 mx-auto mb-4 rounded-full overflow-hidden">
+                    <img
+                      src={`./sp${i + 1}.png`}
+                      alt={skill}
+                      className="h-full w-full object-cover"
+                    />
+                  </div>
+
+                  {/* Title */}
+                  <h3 className="font-semibold text-lg mb-3">{skill}</h3>
+
+                  {/* View Details Button */}
                   <button
-                    onClick={handleLogout}
-                    className="w-full text-left px-3 py-2 rounded-md text-base font-medium text-white hover:bg-indigo-600"
+                    className="mt-2 px-4 py-2 w-full rounded-lg font-medium text-white text-sm shadow-md hover:opacity-90 transition-all duration-200"
+                    style={{
+                      background:
+                        "linear-gradient(to bottom, #5C43F6, #BC61F3)",
+                    }}
                   >
-                    Logout
+                    View Details
                   </button>
-                </>
-              ) : (
-                <>
-                  <Link to="/login" className="block px-3 py-2 rounded-md text-base font-medium text-white hover:bg-indigo-600">
-                    Login
-                  </Link>
-                  <Link to="/register" className="block px-3 py-2 rounded-md text-base font-medium text-white hover:bg-indigo-600">
-                    Register
-                  </Link>
-                </>
-              )}
+                </motion.div>
+              )
+            )}
+          </div>
+        </section>
+
+        {/* Circular Section */}
+        <section className="py-20 px-6 md:px-16 bg-[#020106] text-white flex items-center justify-center">
+          <motion.div
+            {...fadeIn(0.2)}
+            className="flex flex-col md:flex-row items-center justify-center gap-20 max-w-6xl"
+          >
+            {/* Left Circle Image */}
+            <div className="flex-1 flex justify-center">
+              <img
+                src="./orbit.png"
+                alt="Skill Orbit"
+                className="rounded-full w-85 h-85 md:w-85 md:h-85 object-cover shadow-[0_0_40px_-10px_#BC61F3]"
+              />
+            </div>
+
+            {/* Right Content */}
+            <div className="flex-1 text-center md:text-left max-w-xl">
+              <h3 className="text-3xl md:text-5xl font-extrabold leading-snug mb-6 bg-gradient-to-r from-[#5C43F6] via-[#BC61F3] to-white text-transparent bg-clip-text">
+                Empower Your Learning Journey, <br />
+                Track Progress, <br />
+                Earn Badges, <br />
+                Showcase Skills.
+              </h3>
+
+              <p className="text-[#9CA9AE] text-base md:text-lg mb-8">
+                Join thousands of learners already building verified portfolios.
+                Track your growth, earn credibility, and get noticed by top
+                companies.
+              </p>
+
+              {/* Inline Subscribe Form */}
+              <form
+                onSubmit={(e) => e.preventDefault()}
+                className="relative w-full"
+              >
+                <input
+                  type="email"
+                  placeholder="Enter your email"
+                  required
+                  className="w-full bg-[#151c27ff] border border-[#485363] rounded-lg px-5 pr-32 py-5 text-sm text-white placeholder-[#6B7280] focus:outline-none focus:ring-1 focus:ring-[#BC61F3]"
+                />
+                <button
+                  type="submit"
+                  className="absolute top-1/2 right-2 transform -translate-y-1/2 px-5 py-2.5 rounded-lg font-medium text-white text-sm shadow-md hover:opacity-90 transition-all duration-200"
+                  style={{
+                    background: "linear-gradient(to bottom, #5C43F6, #BC61F3)",
+                  }}
+                >
+                  Subscribe
+                </button>
+              </form>
             </div>
           </motion.div>
-        </nav>
+        </section>
 
-        {/* Hero Content */}
-        <div className="relative max-w-7xl mx-auto py-24 px-4 sm:py-32 sm:px-6 lg:px-8">
-          <motion.h1 
-            variants={fadeInUp}
-            className="text-4xl font-extrabold tracking-tight text-white sm:text-5xl lg:text-6xl"
+        {/* BadgeUp, SkillUp Section */}
+        <section className="py-20 px-6 md:px-16 bg-[#020106] text-white text-center">
+          <motion.h2
+            {...fadeIn(0.2)}
+            className="text-3xl font-bold mb-16 text-white bg-clip-text"
           >
-            Launch Your Tech Career
-          </motion.h1>
-          <motion.p 
-            variants={fadeInUp}
-            className="mt-6 text-xl text-indigo-100 max-w-3xl"
+            <span className="text-[#FDD835]">Badge</span> Up.{" "}
+            <span className="text-[#FDD835]">Skill</span> Up.
+          </motion.h2>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 max-w-7xl mx-auto">
+            {[
+              {
+                img: "./b4.png",
+                title: "Earn Verified Badges",
+                desc: "Showcase your verified achievements to employers.",
+              },
+              {
+                img: "./b2.png",
+                title: "Track Your Progress",
+                desc: "Monitor every milestone in your learning journey.",
+              },
+              {
+                img: "./b3.png",
+                title: "Level Up Skills",
+                desc: "Upskill through guided projects and real tasks.",
+              },
+              {
+                img: "./b4.png",
+                title: "Get Recognized",
+                desc: "Gain credibility and boost your professional profile.",
+              },
+            ].map((item, i) => (
+              <motion.div
+                {...fadeIn(i * 0.1 + 0.3)}
+                key={item.title}
+                className="bg-[#141221] border border-[#1E1B2E] rounded-full py-8 px-8 flex flex-col items-center justify-start text-center hover:scale-105 transition-transform duration-300 shadow-[0_0_30px_-10px_rgba(92,67,246,0.3)] h-[380px]"
+              >
+                {/* Circle Image */}
+                <div className="w-45 h-45 md:w-45 md:h-45 rounded-full overflow-hidden mb-6">
+                  <img
+                    src={item.img}
+                    alt={item.title}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+
+                {/* Heading */}
+                <h3 className="text-xl font-semibold mb-3">{item.title}</h3>
+
+                {/* Description */}
+                <p className="text-[#9CA9AE] text-sm max-w-xs">{item.desc}</p>
+              </motion.div>
+            ))}
+          </div>
+        </section>
+
+        {/* Pricing Section */}
+        <section className="py-20 text-center px-6 bg-[#0C081A]">
+          <motion.h2
+            {...fadeIn(0.2)}
+            className="text-3xl font-bold mb-6 leading-snug"
           >
-            Join Hustlee to showcase your skills, build your portfolio, and connect with opportunities that match your expertise.
-          </motion.p>
-          <motion.div 
-            variants={fadeInUp}
-            className="mt-10 flex flex-col sm:flex-row gap-4"
-          >
-            {!user && (
-              <>
-                <Link
-                  to="/register"
-                  className="inline-flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-indigo-700 bg-white hover:bg-indigo-50 transition-all duration-200 transform hover:scale-105"
+            Simple, <span className="text-[#FDCB58]">straightforward</span>{" "}
+            pricing
+          </motion.h2>
+
+          <div className="flex flex-col md:flex-row justify-center gap-8">
+            {/* Free Plan */}
+            <motion.div
+              {...fadeIn(0.3)}
+              className="relative w-80 p-[2px] rounded-2xl transition-all duration-300 hover:scale-105"
+              style={{
+                background:
+                  "linear-gradient(145deg, rgba(92,67,246,0.9), rgba(188,97,243,0.9))",
+              }}
+            >
+              <div className="bg-[#1E1B2E] rounded-2xl p-8 h-full shadow-[0_0_25px_-5px_rgba(188,97,243,0.4)]">
+                <h3 className="text-xl font-semibold mb-2">Lil Hustler 😎</h3>
+                <p className="text-[#9CA9AE] mb-4">
+                  Free plan to get you started
+                </p>
+                <ul className="text-left text-sm space-y-2 mb-6">
+                  <li>✅ Access to free gigs</li>
+                  <li>✅ Basic skillpacks</li>
+                  <li>✅ Community support</li>
+                </ul>
+                <button
+                  className="px-6 py-2 rounded-full font-semibold text-white transition-all duration-200 hover:opacity-90"
+                  style={{
+                    background: "linear-gradient(to bottom, #5C43F6, #BC61F3)",
+                  }}
                 >
                   Get Started
-                </Link>
-                <Link
-                  to="/login"
-                  className="inline-flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-indigo-500 hover:bg-indigo-400 transition-all duration-200 transform hover:scale-105"
+                </button>
+              </div>
+            </motion.div>
+
+            {/* Premium Plan */}
+            <motion.div
+              {...fadeIn(0.5)}
+              className="relative w-80 p-[2px] rounded-2xl transition-all duration-300 hover:scale-105"
+              style={{
+                background:
+                  "linear-gradient(145deg, rgba(188,97,243,0.9), rgba(92,67,246,0.9))",
+              }}
+            >
+              <div className="bg-[#1E1B2E] rounded-2xl p-8 h-full shadow-[0_0_25px_-5px_rgba(92,67,246,0.4)]">
+                <h3 className="text-xl font-semibold mb-2">
+                  Hustler’s Club 💼
+                </h3>
+                <p className="text-[#9CA9AE] mb-4">
+                  Premium plan for serious earners
+                </p>
+                <ul className="text-left text-sm space-y-2 mb-6">
+                  <li>💎 Access to paid gigs</li>
+                  <li>💎 Verified badges</li>
+                  <li>💎 Personalized mentorship</li>
+                </ul>
+                <button
+                  className="px-6 py-2 rounded-full font-semibold text-white transition-all duration-200 hover:opacity-90"
+                  style={{
+                    background: "linear-gradient(to bottom, #5C43F6, #BC61F3)",
+                  }}
                 >
-                  Sign In
-                </Link>
-              </>
-            )}
-            {user && (
-              <Link
-                to="/dashboard"
-                className="inline-flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-indigo-700 bg-white hover:bg-indigo-50 transition-all duration-200 transform hover:scale-105"
-              >
-                Go to Dashboard
-              </Link>
-            )}
-          </motion.div>
-        </div>
-      </motion.div>
+                  Get Started
+                </button>
+              </div>
+            </motion.div>
+          </div>
+        </section>
 
-      {/* Features Section with Interactive Cards */}
-      <div className="py-16 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
-            className="text-center"
-          >
-            <h2 className="text-3xl font-extrabold text-gray-900 sm:text-4xl">
-              Everything You Need to Succeed
-            </h2>
-            <p className="mt-4 text-lg text-gray-500">
-              Comprehensive tools and resources to help you build your tech career
-            </p>
-          </motion.div>
+        {/* Our Features Section */}
+        <section className="py-20 px-6 md:px-16 bg-[#020106] text-white">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto text-center sm:text-left">
+            {/* Heading + Paragraph (not a card) */}
+            <motion.div
+              {...fadeIn(0.2)}
+              className="flex flex-col justify-center items-center sm:items-start p-2"
+            >
+              <h2 className="text-3xl font-bold mb-4 bg-gradient-to-b from-[#5C43F6] via-[#BC61F3] to-[#BC61F3] text-transparent bg-clip-text">
+                Our Features
+              </h2>
+              <p className="text-[#9CA9AE] text-sm max-w-sm leading-relaxed">
+                Explore the core highlights that make Hustlee the ultimate
+                platform for learners, mentors, and earners. Every feature is
+                built to help you grow smarter and faster.
+              </p>
+            </motion.div>
 
-          <div className="mt-16 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
+            {/* Feature Cards */}
             {[
               {
-                title: 'Skill Tests',
-                description: 'Validate your expertise with industry-standard assessments',
-                icon: (
-                  <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
-                  </svg>
-                ),
+                logo: "🎯",
+                title: "Goal-Based Learning",
+                desc: "Set learning goals, track progress, and earn verified badges.",
               },
               {
-                title: 'Portfolio Building',
-                description: 'Create a stunning portfolio to showcase your work',
-                icon: (
-                  <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
-                  </svg>
-                ),
+                logo: "🧠",
+                title: "AI Skill Assessment",
+                desc: "Smart AI-driven analysis to measure and improve your skills.",
               },
               {
-                title: 'Mentorship',
-                description: 'Get guidance from industry experts',
-                icon: (
-                  <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-                  </svg>
-                ),
+                logo: "👨‍🏫",
+                title: "Expert Mentorship",
+                desc: "Learn directly from experienced mentors and industry experts.",
               },
               {
-                title: 'Gigs & Internships',
-                description: 'Find opportunities to apply your skills',
-                icon: (
-                  <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                  </svg>
-                ),
+                logo: "💰",
+                title: "Paid Gigs",
+                desc: "Get real-world experience and earn while you learn.",
               },
-            ].map((feature, index) => (
+              {
+                logo: "🏆",
+                title: "Achievements & Rewards",
+                desc: "Earn recognition, level up, and showcase your verified profile.",
+              },
+            ].map((feature, i) => (
               <motion.div
+                {...fadeIn(i * 0.1 + 0.3)}
                 key={feature.title}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                whileHover={{ scale: 1.05 }}
-                className="relative group"
+                className="bg-[#141221] rounded-xl p-8 flex flex-col items-center justify-center text-center hover:scale-105 transition-transform duration-300 shadow-[0_0_25px_-10px_rgba(92,67,246,0.3)] border border-[#1E1B2E]"
               >
-                <div className="h-full bg-white rounded-lg shadow-lg p-6 hover:shadow-xl transition-all duration-200 border border-gray-100">
-                  <div className="text-indigo-600 mb-4">{feature.icon}</div>
-                  <h3 className="text-lg font-medium text-gray-900">{feature.title}</h3>
-                  <p className="mt-2 text-base text-gray-500">{feature.description}</p>
-                </div>
+                <div className="text-4xl mb-4">{feature.logo}</div>
+                <h3 className="text-lg font-semibold mb-2">{feature.title}</h3>
+                <p className="text-[#9CA9AE] text-sm max-w-xs leading-relaxed">
+                  {feature.desc}
+                </p>
               </motion.div>
             ))}
           </div>
-        </div>
-      </div>
+        </section>
 
-      {/* Testimonials Section */}
-      <div className="bg-gray-50 py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
-            className="text-center"
+        {/* Contact Section */}
+        <section className="py-20 px-6 md:px-16 bg-[#020106] text-white">
+          <motion.div
+            {...fadeIn(0.2)}
+            className="flex flex-col md:flex-row items-center justify-center gap-12 max-w-6xl mx-auto"
           >
-            <h2 className="text-3xl font-extrabold text-gray-900 sm:text-4xl">
-              What Our Students Say
-            </h2>
+            {/* Left Image */}
+            <motion.div {...fadeIn(0.3)} className="flex-1 flex justify-center">
+              <img
+                src="./contact.png"
+                alt="Contact Illustration"
+                className="rounded-xl shadow-[0_0_40px_-10px_#5C43F6] w-full max-w-md object-cover"
+              />
+            </motion.div>
+
+            {/* Right Contact Form */}
+            <motion.div
+              {...fadeIn(0.4)}
+              className="flex-1 text-center md:text-left"
+            >
+              <h2 className="text-3xl font-bold mb-6">Contact Us Now</h2>
+              <p className="text-[#9CA9AE] mb-8 max-w-md mx-auto md:mx-0">
+                Have questions or want to collaborate? Reach out and let’s
+                connect!
+              </p>
+
+              <form className="space-y-4 text-left max-w-md mx-auto md:mx-0">
+                <input
+                  type="text"
+                  placeholder="Your Name"
+                  className="w-full bg-[#1E2939] border border-[#485363] rounded-md px-4 py-2 text-white text-sm focus:outline-none focus:ring-1 focus:ring-[#BC61F3]"
+                />
+                <input
+                  type="email"
+                  placeholder="Your Email"
+                  className="w-full bg-[#1E2939] border border-[#485363] rounded-md px-4 py-2 text-white text-sm focus:outline-none focus:ring-1 focus:ring-[#BC61F3]"
+                />
+                <textarea
+                  placeholder="Your Message"
+                  rows="4"
+                  className="w-full bg-[#1E2939] border border-[#485363] rounded-md px-4 py-2 text-white text-sm focus:outline-none focus:ring-1 focus:ring-[#BC61F3]"
+                ></textarea>
+                <button
+                  type="submit"
+                  className="w-full py-3 rounded-md text-white font-semibold shadow-md hover:opacity-90 transition-all duration-200"
+                  style={{
+                    background: "linear-gradient(to bottom, #5C43F6, #BC61F3)",
+                  }}
+                >
+                  Send Message
+                </button>
+              </form>
+            </motion.div>
           </motion.div>
-
-          <div className="mt-16 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
-            {[
-              {
-                content: "Hustlee helped me land my dream job at a top tech company. The skill tests and portfolio building features were invaluable.",
-                author: "Srishti",
-                role: "Frontend Developer",
-                image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-              },
-              {
-                content: "The mentorship program connected me with industry experts who provided invaluable guidance for my career transition.",
-                author: "Dev",
-                role: "Full Stack Developer",
-                image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-              },
-              {
-                content: "I found my first freelance gig through Hustlee's platform. The community is supportive and the opportunities are endless.",
-                author: "Amaan",
-                role: "UI/UX Designer",
-                image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-              }
-            ].map((testimonial, index) => (
-              <motion.div
-                key={testimonial.author}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                whileHover={{ scale: 1.02 }}
-                className="bg-white rounded-lg shadow-lg p-6 hover:shadow-xl transition-all duration-200"
-              >
-                <div className="flex items-center mb-4">
-                  <img
-                    className="h-12 w-12 rounded-full"
-                    src={testimonial.image}
-                    alt={testimonial.author}
-                  />
-                  <div className="ml-4">
-                    <h4 className="text-lg font-medium text-gray-900">{testimonial.author}</h4>
-                    <p className="text-sm text-gray-500">{testimonial.role}</p>
-                  </div>
-                </div>
-                <p className="text-gray-600">{testimonial.content}</p>
-              </motion.div>
-            ))}
-          </div>
-        </div>
+        </section>
       </div>
-
-      {/* Call to Action Section */}
-      <motion.div 
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.5 }}
-        className="bg-indigo-700"
-      >
-        <div className="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:py-16 lg:px-8 lg:flex lg:items-center lg:justify-between">
-          <h2 className="text-3xl font-extrabold tracking-tight text-white sm:text-4xl">
-            <span className="block">Ready to start your journey?</span>
-            <span className="block text-indigo-200">Join Hustlee today.</span>
-          </h2>
-          <div className="mt-8 flex lg:mt-0 lg:flex-shrink-0">
-            <motion.div
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              <Link
-                to="/register"
-                className="inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-indigo-600 bg-white hover:bg-indigo-50 transition-all duration-200"
-              >
-                Get started
-              </Link>
-            </motion.div>
-            <motion.div
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="ml-3 inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-white bg-indigo-500 hover:bg-indigo-400 transition-all duration-200"
-            >
-              Learn more
-            </motion.div>
-          </div>
-        </div>
-      </motion.div>
-    </div>
+    </>
   );
 };
 
-export default Home; 
+export default Home;
