@@ -618,7 +618,7 @@ const Register = () => {
                           onClick={() =>
                             setFormData((prev) => ({ ...prev, userType: type }))
                           }
-                          className={`flex-1 py-3 text-sm font-medium transition-all duration-200 ${
+                          className={`flex-1 py-2 text-sm font-medium transition-all duration-200 ${
                             formData.userType === type
                               ? "text-white bg-gradient-to-b from-[#5C43F6] to-[#BC61F3]"
                               : "text-[#9CA9AE] bg-[#1E2939] hover:bg-[#2C3A4E]"
