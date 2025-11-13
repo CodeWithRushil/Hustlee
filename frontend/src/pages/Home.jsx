@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
+import { useEffect } from "react";
+import { AnimatePresence } from "framer-motion";
 
 const fadeIn = (delay = 0) => ({
   initial: { opacity: 0, y: 30 },
@@ -12,6 +14,17 @@ const fadeIn = (delay = 0) => ({
 const Home = () => {
   const [active, setActive] = useState("Home");
   const navItems = ["Home", "Skillpack", "Gigs", "Mentor", "Leaderboard"];
+  const robotImages = ["/robot-open.jpeg", "/robot-closed.jpeg"];
+
+  const [robotIndex, setRobotIndex] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setRobotIndex((prev) => (prev === 0 ? 1 : 0));
+    }, 3000);
+
+    return () => clearInterval(interval);
+  }, []);
   return (
     <>
       <nav className="relative px-8 py-4 shadow-md bg-[#020106]">
@@ -105,28 +118,28 @@ const Home = () => {
           ))}
         </ul>
       </nav>
-      
+
       <div className="bg-[#020106] text-white overflow-hidden">
         {/* Hero Section */}
-        <section className="flex flex-col-reverse md:flex-row items-center justify-between pt-24 pb-20 px-4 md:px-16">
-          {/* Left Text Section */}
+        <section className="flex flex-col-reverse md:flex-row items-center justify-between pt-24 pb-24 px-4 md:px-24">
+          {/* LEFT SIDE */}
           <motion.div
             {...fadeIn(0.2)}
-            className="flex-1 text-center md:text-left mt-10 md:mt-0"
+            className="flex-1 text-center md:text-left mt-14 md:mt-0"
           >
-            {/* Gradient Heading */}
-            <h1 className="text-4xl md:text-6xl font-extrabold leading-tight mb-4 bg-gradient-to-r from-[#735ff7ff] via-[#c4b6ccff] to-[#BC61F3] text-transparent bg-clip-text">
+            {/* Large Balanced Heading */}
+            <h1 className="text-5xl md:text-7xl font-extrabold leading-[1.15] mb-6 bg-gradient-to-r from-[#735ff7ff] via-[#c4b6ccff] to-[#BC61F3] text-transparent bg-clip-text">
               Learn <br /> Get Verified <br /> Earn
             </h1>
 
-            <p className="text-[#BCBCBC] max-w-lg mb-6 text-base md:text-lg">
+            <p className="text-[#BCBCBC] max-w-xl mb-8 text-lg md:text-xl leading-relaxed">
               Join HUSTLee — where you learn, get verified, and make connections
               along your grind.
             </p>
 
             <motion.button
               {...fadeIn(0.4)}
-              className="px-8 py-3 rounded-full text-white font-semibold shadow-md hover:opacity-90 transition-all duration-200"
+              className="px-12 py-4 rounded-full text-white font-semibold text-lg shadow-md hover:opacity-90 transition-all duration-200"
               style={{
                 background: "linear-gradient(to bottom, #5C43F6, #BC61F3)",
               }}
@@ -135,15 +148,15 @@ const Home = () => {
             </motion.button>
           </motion.div>
 
-          {/* Right Image Placeholder */}
+          {/* RIGHT: Robot */}
           <motion.div
             {...fadeIn(0.5)}
             className="flex-1 flex justify-center md:justify-end"
           >
             <img
-              src="https://placehold.co/450x350/1E1B2E/FFFFFF?text=Hero+Image"
-              alt="Hero Placeholder"
-              className="w-full max-w-md rounded-lg shadow-lg object-contain"
+              src={robotImages[robotIndex]}
+              alt="Hero Robot"
+              className="w-full max-w-xl h-[520px] md:h-[600px] object-contain"
             />
           </motion.div>
         </section>
@@ -160,7 +173,7 @@ const Home = () => {
             ].map((item, index) => (
               <motion.div
                 key={index}
-                className="flex cursor-pointer items-center space-x-3 rounded-xl px-5 py-4 backdrop-blur-sm shadow-lg hover:shadow-[#BC61F3]/40 transition-all duration-300"
+                className="flex cursor-pointer items-center space-x-3 rounded-xl px-5 py-4 backdrop-blur-sm shadow-lg shadow-[#BC61F3]/40 transition-all duration-300"
                 animate={{
                   y: [0, -8, 0],
                 }}
