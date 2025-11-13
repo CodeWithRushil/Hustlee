@@ -610,7 +610,7 @@ const Register = () => {
                   </label>
 
                   <div className="flex w-full rounded-md overflow-hidden border border-[#485363]">
-                    {["student", "mentor", "company", "employee"].map(
+                    {["student", "company"].map(
                       (type) => (
                         <button
                           key={type}

@@ -142,7 +142,7 @@ const Login = () => {
 
         <div className="flex justify-center mt-6">
           <div className="flex w-full max-w-md rounded-md overflow-hidden border border-[#485363]">
-            {["student", "mentor"].map((type) => (
+            {["student", "company"].map((type) => (
               <button
                 key={type}
                 type="button"
@@ -155,7 +155,7 @@ const Login = () => {
                     : "text-[#9CA9AE] bg-[#1E2939] hover:bg-[#2C3A4E]"
                 }`}
               >
-                {type === "student" ? "Login as Student" : "Login as Mentor"}
+                {type === "student" ? "Login as Student" : "Login as Company"}
               </button>
             ))}
           </div>

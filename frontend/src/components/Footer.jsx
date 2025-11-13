@@ -22,7 +22,7 @@ export default function Footer() {
 
         {/* Column 2 — Opportunities */}
         <div>
-          <h3 className="text-2xl font-semibold mb-6">Opportunities</h3>
+          <h3 className="text-xl font-semibold mb-6">Opportunities</h3>
           <ul className="space-y-4 text-[#BCBCBC] text-lg">
             <li>Web Development</li>
             <li>Design Projects</li>
@@ -33,7 +33,7 @@ export default function Footer() {
 
         {/* Column 3 — Stats */}
         <div>
-          <h3 className="text-2xl font-semibold mb-6">Stats</h3>
+          <h3 className="text-xl font-semibold mb-6">Stats</h3>
           <ul className="space-y-4 text-[#BCBCBC] text-lg">
             <li>XP Activity</li>
             <li>Task Analytics</li>
@@ -43,7 +43,7 @@ export default function Footer() {
 
         {/* Column 4 — Hustlee Team */}
         <div>
-          <h3 className="text-2xl font-semibold mb-6">Hustlee Team</h3>
+          <h3 className="text-xl font-semibold mb-6">Hustlee Team</h3>
           <ul className="space-y-4 text-[#BCBCBC] text-lg">
             <li>About Hustlee</li>
             <li>Support Center</li>
@@ -54,7 +54,7 @@ export default function Footer() {
 
         {/* Column 5 — Guides */}
         <div>
-          <h3 className="text-2xl font-semibold mb-6">Guides</h3>
+          <h3 className="text-xl font-semibold mb-6">Guides</h3>
           <ul className="space-y-4 text-[#BCBCBC] text-lg">
             <li>How it Works</li>
             <li>Hustlee Blog</li>
