@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import Footer from "../components/Footer";
 
 const Login = () => {
   const { login, googleLogin } = useAuth();
@@ -37,7 +38,7 @@ const Login = () => {
 
   return (
     <>
-      <nav className="relative px-8 py-4 shadow-md bg-[#020106]">
+      <nav className="relative px-8 py-5 shadow-md bg-[#020106] border-b border-[#1E1B2E]">
         <div className="flex items-center justify-between">
           {/* Left: Logo (linked to Home) */}
           <Link
@@ -331,6 +332,7 @@ const Login = () => {
           </div>
         </div>
       </div>
+      <Footer/>
     </>
   );
 };

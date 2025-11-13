@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { useEffect } from "react";
 import { AnimatePresence } from "framer-motion";
+import Footer from "../components/Footer";
 
 const fadeIn = (delay = 0) => ({
   initial: { opacity: 0, y: 30 },
@@ -27,7 +28,7 @@ const Home = () => {
   }, []);
   return (
     <>
-      <nav className="relative px-8 py-4 shadow-md bg-[#020106]">
+      <nav className="relative px-8 py-5 shadow-md bg-[#020106] border-b border-[#1E1B2E]">
         <div className="flex items-center justify-between">
           {/* Left: Logo (linked to Home) */}
           <Link
@@ -585,6 +586,7 @@ const Home = () => {
           </motion.div>
         </section>
       </div>
+      <Footer/>
     </>
   );
 };

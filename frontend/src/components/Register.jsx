@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { motion } from "framer-motion";
+import Footer from "../components/Footer";
 
 // Define a list of common skills
 const commonSkills = [
@@ -466,7 +467,7 @@ const Register = () => {
 
   return (
     <>
-      <nav className="relative px-8 py-4 shadow-md bg-[#020106]">
+      <nav className="relative px-8 py-5 shadow-md bg-[#020106] border-b border-[#1E1B2E]">
         <div className="flex items-center justify-between">
           {/* Left: Logo (linked to Home) */}
           <Link
@@ -764,6 +765,7 @@ const Register = () => {
           </div>
         </motion.div>
       </div>
+      <Footer/>
     </>
   );
 };
