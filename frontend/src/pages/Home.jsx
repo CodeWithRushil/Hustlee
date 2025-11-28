@@ -22,7 +22,7 @@ const Home = () => {
   useEffect(() => {
     const interval = setInterval(() => {
       setRobotIndex((prev) => (prev === 0 ? 1 : 0));
-    }, 3000);
+    }, 1000);
 
     return () => clearInterval(interval);
   }, []);
